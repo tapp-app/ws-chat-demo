@@ -48,14 +48,35 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.js"></script>
 <script>
-	var socket = io();
+	// var socket = io();
+	// $('form').submit(function() {
+	// 	socket.emit('chat message', $('#m').val());
+	// 	$('#m').val('');
+	// 	return false;
+	// });
+	// socket.on('chat message', function(msg) {
+	// 	console.log('message: ' + msg);
+	// 	$('#messages').append($('<li>').text(msg));
+	// });
+
+	var chat = io.connect('localhost:8000/chat');
+	chat.on('joined', function(data) {
+		console.log(data);
+	})
 	$('form').submit(function() {
-		socket.emit('chat message', $('#m').val());
+		chat.emit('message', $('#m').val());
 		$('#m').val('');
 		return false;
 	});
-	socket.on('chat message', function(msg) {
-		console.log('message: ' + msg);
-		$('#messages').append($('<li>').text(msg));
+	chat.on('message', function(data) {
+		console.log('message: ' + data);
+		$('#messages').append($('<li>').text(data));
 	});
 </script>
+
+
+
+
+
+
+
